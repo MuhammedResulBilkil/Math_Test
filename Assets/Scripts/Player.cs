@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
@@ -8,6 +10,8 @@ public class Player : MonoBehaviour
     public float rotateSpeed;
     public float rotateAngle = 60f;
 
+    [SerializeField] private GameObject _spherePrefab;
+    
     [SerializeField] private bool _dotProduct;
     [SerializeField] private bool _crossProduct;
     [SerializeField] private bool _reflection;
@@ -20,6 +24,47 @@ public class Player : MonoBehaviour
     {
         _targetRotation = transform.rotation;
     }
+
+    /*private void SpawnSphereOnEdgeRandomly3D()
+    {
+        float radius = 3f;
+        Vector3 randomPos = Random.insideUnitSphere * radius;
+        randomPos += transform.position;
+        randomPos.y = 0f;
+
+        Vector3 direction = randomPos - transform.position;
+        direction.Normalize();
+
+        float dotProduct = Vector3.Dot(transform.forward, direction);
+        float dotProductAngle = Mathf.Acos(dotProduct / transform.forward.magnitude * direction.magnitude);
+
+        randomPos.x = Mathf.Cos(dotProductAngle) * radius + transform.position.x;
+        randomPos.z = Mathf.Sin(dotProductAngle * (Random.value > 0.5f ? 1f : -1f)) * radius + transform.position.z;
+
+        GameObject go = Instantiate(_spherePrefab, randomPos, Quaternion.identity);
+        go.transform.position = randomPos;
+    }*/
+
+    /*private void SpawnSphereOnEdgeRandomly2D()
+    {
+        float radius = 3f;
+        Vector3 randomPos = Random.insideUnitSphere * radius;
+        randomPos += transform.position;
+        randomPos.y = 0f;
+        
+        Vector3 direction = randomPos - transform.position;
+        direction.Normalize();
+        
+        float dotProduct = Vector3.Dot(transform.forward, direction);
+        float dotProductAngle = Mathf.Acos(dotProduct / transform.forward.magnitude * direction.magnitude);
+        
+        randomPos.x = Mathf.Cos(dotProductAngle) * radius + transform.position.x;
+        randomPos.y = Mathf.Sin(dotProductAngle * (Random.value > 0.5f ? 1f : -1f)) * radius + transform.position.y;
+        randomPos.z = transform.position.z;
+        
+        GameObject go = Instantiate(_spherePrefab, randomPos, Quaternion.identity);
+        go.transform.position = randomPos;
+    }*/
 
     // Update is called once per frame
     void Update()
@@ -99,5 +144,11 @@ public class Player : MonoBehaviour
         }
         
         #endregion
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 3);
     }
 }
